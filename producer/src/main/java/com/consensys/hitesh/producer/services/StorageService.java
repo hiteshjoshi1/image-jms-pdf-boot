@@ -1,6 +1,7 @@
 package com.consensys.hitesh.producer.services;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -43,7 +44,7 @@ public class StorageService {
 		return updated;
 	}
 
-	public Resource loadFile(String filename, Path path) {
+	public Resource loadFile(String filename, Path path) throws FileNotFoundException {
 		try {
 			Path file = path.resolve(filename);
 			Resource resource = new UrlResource(file.toUri());
@@ -51,7 +52,7 @@ public class StorageService {
 				return resource;
 			} else {
 				logger.error("Could not find resource" );			
-				throw new RuntimeException("FAILED :Could not find resource");
+				throw new FileNotFoundException("FAILED :Could not find the file");
 			}
 		} catch (MalformedURLException e) {
 			throw new RuntimeException("FAIL!");

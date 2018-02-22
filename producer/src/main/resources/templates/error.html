@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Error Page</title>
+	<link rel="stylesheet" type="text/css"
+		href="webjars/bootstrap/4.0.0/css/bootstrap.min.css" />
+<div th:replace="fragments/header :: header-css" />
+</head>
+<body>
+<div class="container">
+	<div th:replace="fragments/header :: header" />
+<div class="jumbotron alert-danger">
+    <h1>Oops... something went wrong.</h1>
+  <span th:text="${message}"></span>
+</div>
+</div>
+</body>
+</html>
+
+
+<!-- <!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Consensys Demo on Java</title>
+	<link rel="stylesheet" type="text/css"
+		href="webjars/bootstrap/4.0.0/css/bootstrap.min.css" />
+<div th:replace="fragments/header :: header-css" />
+
+</head>
+<body>
+	<div th:replace="fragments/header :: header" />
+
+	<div class = "container">
+	There was an unexpected error 
+	<span th:text="${message}"></span>
+    </div>
+</body>
+</html> -->

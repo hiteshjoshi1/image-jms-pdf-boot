@@ -1,0 +1,9 @@
+consumer/.mvn
+consumer/.settings
+.classpath
+.project
+producer/.settings
+producer/.mvn
+
+.springBeans
+/.metadata/

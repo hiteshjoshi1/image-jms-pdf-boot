@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Consensys Demo on Java</title>
+<div th:replace="fragments/header :: header-css" />
+</head>
+<body>
+	<div th:replace="fragments/header :: header" />
+	<div class="container">
+
+		<div class="row">
+			<div class="col-md-12 text-white h-100">
+				<h1 class="display-3 mb-4 text-dark">Image APP&nbsp;</h1>
+				<p class="lead mb-5 text-dark">Image PDF JMS docker et
+					al&nbsp;</p>
+				<a href="/upload"
+					class="btn btn-lg align-items-center mx-5 btn-primary">Upload
+					Images</a> <a href="/view/pdf" target="_blank"
+					class="btn btn-lg mx-5 btn-secondary">View PDF</a> 
+					<a
+					href="/getallfiles" class="btn btn-lg mx-5 btn-secondary">View
+					Your Images</a>
+				<a
+					href="/download/pdf" class="btn btn-lg mx-5 btn-secondary">Download PDF</a>	
+					
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>

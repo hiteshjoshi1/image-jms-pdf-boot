@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Consensys Demo on Java</title>
+
+<div th:replace="fragments/header :: header-css" />
+
+</head>
+<body>
+
+	<div th:replace="fragments/header :: header" />
+
+	<div class="container">
+		<div class="row">
+			<div class="p-3 align-self-center col-6 col-md-6">
+				<div class="card">
+					<div class="card-block p-5 bg-light">
+						<h1>Upload your Image</h1>
+					  <small id="nameHelp" class="form-text text-muted">Only accepts PNG and JPEG images.</small>
+              		       <!-- accept is just a suggestion to the browser to show only jpeg and png
+              		       any one can inspect code and remove this check to upload any type of file
+              		       added server side checks for  file type -->  
+						<form method="POST" action="/post" enctype="multipart/form-data">
+							<input type="file" name="file" accept=".png,.jpeg,.jpg" /> <input
+								th:name="${_csrf.parameterName}" type="hidden"
+								th:value="${_csrf.token}" /> <input class="btn btn-primary"
+								type="submit" value="Submit" />
+						</form>
+
+						<hr />
+					</div>
+
+				</div>
+				<div th:if="${message}">
+					<p class="alert alert-danger" th:text="${message}" />
+				</div> 
+				<div th:if="${success}">
+					<p class="alert alert-success" th:text="${success}" />
+				</div> 
+			</div>
+
+		</div>
+	</div>
+
+</body>
+</html>

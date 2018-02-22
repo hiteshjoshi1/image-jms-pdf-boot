@@ -59,15 +59,17 @@ public class UploadController {
 		}
 		String imageFileName = file.getOriginalFilename();
 		Random random = new Random();
+		// appending Random Numbers to avoid file Name collisions
 		int randomGenerator = random.nextInt(100000);
 		String[] tokens = imageFileName.split(DOT_SEPRATOR_REGEX);
-		imageFileName = tokens[0] + UNDERSCORE + randomGenerator + DOT + tokens[1];
+		String imageWithRandomName = tokens[0]+ UNDERSCORE+randomGenerator;
+		imageFileName = imageWithRandomName + DOT + tokens[1];
 		String completeImagePath = ProducerConstants.IMAGES_FULL_PATH + File.separator + imageFileName;
 		Path imagePath = Paths.get(ProducerConstants.IMAGES_FULL_PATH);
 		try {
 			if (storageService.store(file, imageFileName, imagePath)) {
 				message = FILE_UPLOAD_SUCCESSFUL + file.getOriginalFilename();
-				ImageRequestDTO imageRequestDTO = new ImageRequestDTO(completeImagePath, imageFileName,
+				ImageRequestDTO imageRequestDTO = new ImageRequestDTO(completeImagePath,imageFileName,imageWithRandomName,
 						principal.getName(), Calendar.getInstance().getTime());
 				// save to Mongo DB
 				imageRepository.save(imageRequestDTO);

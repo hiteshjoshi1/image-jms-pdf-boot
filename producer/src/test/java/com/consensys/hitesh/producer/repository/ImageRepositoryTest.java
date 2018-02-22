@@ -32,9 +32,9 @@ public class ImageRepositoryTest {
 
 //    	imageRepository.deleteAll();
 
-    	req1 = imageRepository.save(new ImageRequestDTO("C:\\Users\\hitjoshi\\ImageFolder","abc.png", "Hitesh", java.util.Calendar.getInstance().getTime()));
-    	req2 = imageRepository.save(new ImageRequestDTO("C:\\Users\\hitjoshi\\ImageFolder","cde.png", "Joshi", java.util.Calendar.getInstance().getTime()));
-    	req3 = imageRepository.save(new ImageRequestDTO("C:\\Users\\hitjoshi\\ImageFolder","xyz.png", "Hitesh", java.util.Calendar.getInstance().getTime()));
+    	req1 = imageRepository.save(new ImageRequestDTO("C:\\Users\\hitjoshi\\ImageFolder","abc121.png","abc121" ,"Hitesh", java.util.Calendar.getInstance().getTime()));
+    	req2 = imageRepository.save(new ImageRequestDTO("C:\\Users\\hitjoshi\\ImageFolder","cde121.png","cde121" ,"Joshi", java.util.Calendar.getInstance().getTime()));
+    	req3 = imageRepository.save(new ImageRequestDTO("C:\\Users\\hitjoshi\\ImageFolder","xyz231.png","xyz231" ,"Hitesh", java.util.Calendar.getInstance().getTime()));
     }
 
 

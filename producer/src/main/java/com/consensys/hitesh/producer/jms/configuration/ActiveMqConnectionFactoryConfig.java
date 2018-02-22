@@ -25,7 +25,7 @@ public class ActiveMqConnectionFactoryConfig {
 	@Value("${spring.activemq.password}")
 	String password;
  
-	@Value("${activemq.pdf.queue}")
+	@Value("${activemq.image.queue}")
 	String queue;
 	
 	@Bean

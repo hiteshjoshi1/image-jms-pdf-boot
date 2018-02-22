@@ -17,31 +17,30 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 	"@id",
 	"imageLocation",
 	"imageName",
+	"imagePdfName",
 	"imageOwner",
 	"timestamp"
 })
 public class ImageDTO implements Serializable
 {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 3152035651745415687L;
-	
 
 	@JsonProperty("@id")
 	private Integer id;
 	@JsonProperty("imageLocation")
 	private String imageLocation;
 	@JsonProperty("imageName")
-	private String imageName;
+	private String imageName;	
+	@JsonProperty("imagePdfName")
+	private String imagePdfName;
 	@JsonProperty("imageOwner")
 	private String imageOwner;
 	@JsonProperty("timestamp")
 	private Date timestamp;
 	@JsonIgnore
 	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
-//	private final static long serialVersionUID = -2930091659058179271L;
+
 
 	@JsonProperty("@id")
 	public Integer getId() {
@@ -105,9 +104,18 @@ public class ImageDTO implements Serializable
 
 	@Override
 	public String toString() {
-		return "ImageDTO [id=" + id + ", imageLocation=" + imageLocation + ", imageName=" + imageName + ", imageOwner="
-				+ imageOwner + ", timestamp=" + timestamp + "]";
+		return "ImageDTO [id=" + id + ", imageLocation=" + imageLocation + ", imageName=" + imageName
+				+ ", imagePdfName=" + imagePdfName + ", imageOwner=" + imageOwner + ", timestamp=" + timestamp + "]";
 	}
+	@JsonProperty("imagePdfName")
+	public String getImagePdfName() {
+		return imagePdfName;
+	}
+	@JsonProperty("imagePdfName")
+	public void setImagePdfName(String imagePdfName) {
+		this.imagePdfName = imagePdfName;
+	}
+
 
 	@Override
 	public int hashCode() {
@@ -117,6 +125,7 @@ public class ImageDTO implements Serializable
 		result = prime * result + ((imageLocation == null) ? 0 : imageLocation.hashCode());
 		result = prime * result + ((imageName == null) ? 0 : imageName.hashCode());
 		result = prime * result + ((imageOwner == null) ? 0 : imageOwner.hashCode());
+		result = prime * result + ((imagePdfName == null) ? 0 : imagePdfName.hashCode());
 		result = prime * result + ((timestamp == null) ? 0 : timestamp.hashCode());
 		return result;
 	}
@@ -149,6 +158,11 @@ public class ImageDTO implements Serializable
 			if (other.imageOwner != null)
 				return false;
 		} else if (!imageOwner.equals(other.imageOwner))
+			return false;
+		if (imagePdfName == null) {
+			if (other.imagePdfName != null)
+				return false;
+		} else if (!imagePdfName.equals(other.imagePdfName))
 			return false;
 		if (timestamp == null) {
 			if (other.timestamp != null)

@@ -59,6 +59,7 @@ public class StorageService {
 				throw new FileNotFoundException("FAILED :Could not find the file");
 			}
 		} catch (MalformedURLException e) {
+			logger.error("Load file Failed with error", e);
 			throw new RuntimeException("FAIL!");
 		}
 	}
@@ -81,6 +82,7 @@ public class StorageService {
 				 Files.createDirectory(Paths.get(pdfFullPath));
 			 }
 		} catch (IOException e) {
+			logger.error("Init Failed with error", e);
 			throw new RuntimeException("Could not initialize storage!");
 		}
 	}

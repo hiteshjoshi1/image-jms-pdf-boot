@@ -16,7 +16,7 @@ public class JMSService {
     @Autowired
     JMSPdfMessagePublisher jmsPdfMessagePublisher;
     
-    public void sendToQueue(String test ) {
-    	jmsPdfMessagePublisher.pushImageRequest(test);
+    public void sendToQueue(String tempPDFPath ) {
+    	jmsPdfMessagePublisher.pushImageRequest(tempPDFPath);
     }
 }

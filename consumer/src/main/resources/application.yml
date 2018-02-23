@@ -4,27 +4,23 @@ spring:
     active: "dev"
   main:
     banner-mode: "off" 
-  http:
-    multipart:
-      max-file-size: 3MB
-      max-request-size: 10MB
   activemq:
     in-memory: false
     user: admin
     password: admin      
-  data:
-    mongodb:
-      database: imageDB  
+ 
     
 logging:
   file: application.log
 
 server:
-  port: ${port:3333} 
+  port: ${port:4444} 
 
 activemq:
     image:
        queue: consensys-image-queue 
+    pdf:
+       queue: consensys-pdf-queue   
         
 user: 
   pdfFolderName: PDFFolder
@@ -52,9 +48,7 @@ spring:
   profiles: docker
   activemq:
     broker-url: tcp://activemq:61616
-  data:
-    mongodb:
-      uri: mongodb://mongodb:27017   
+
 user: 
   baseDir: /data  
 

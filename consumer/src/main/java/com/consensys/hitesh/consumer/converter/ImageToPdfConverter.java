@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.consensys.hitesh.consumer.model.ImageDTO;
@@ -39,8 +40,9 @@ public class ImageToPdfConverter {
 	public static final String FILE_SEPRATOR = File.separator;
 	
 	public static final String PDF_EXTENSION = ".pdf";
-
-	final String home = System.getProperty("user.home");
+	
+	@Value("${user.baseDir}")
+	private String home;	
 
 	private static final int POSITION_X_COORDINATE = 10;
 	private static final int POSITION_Y_COORDINATE = 10;

@@ -1,5 +1,6 @@
 package com.consensys.hitesh.producer.api;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -17,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,12 +26,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
-import com.consensys.hitesh.producer.constants.ProducerConstants;
+import com.consensys.hitesh.producer.constants.LocationProperties;
 import com.consensys.hitesh.producer.model.ImageRequestDTO;
 import com.consensys.hitesh.producer.repository.ImageRepository;
 import com.consensys.hitesh.producer.services.StorageService;
@@ -47,7 +46,9 @@ public class DownloadController {
 
 	@Autowired
 	StorageService storageService;
-
+	
+	@Autowired
+	LocationProperties locationProperties;
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class.getName());
 
 	private static final String CACHE_CONTROL = "Cache-Control";
@@ -66,8 +67,9 @@ public class DownloadController {
 	 */
 	@RequestMapping(value = "/view/pdf", method = RequestMethod.GET, produces = "application/pdf")
 	public ResponseEntity<InputStreamResource> openPdfFile() throws IOException  {
-		Path pdfPath = Paths.get(ProducerConstants.PDF_FULL_PATH);
-		Resource finalPDF = storageService.loadFile(ProducerConstants.FINAL_PDF_NAME, pdfPath);
+		String pdfFullPath    = locationProperties.getHome()+File.separator+locationProperties.getPdfFolderName();
+		Path pdfPath = Paths.get(pdfFullPath);
+		Resource finalPDF = storageService.loadFile(locationProperties.getFinalPDFName(), pdfPath);
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.add(CACHE_CONTROL, NO_CACHE_STORE_MUST_REVALIDATE);
@@ -88,8 +90,9 @@ public class DownloadController {
 	 */
 	@RequestMapping(value = "/download/pdf", method = RequestMethod.GET, produces = "application/pdf")
 	public ResponseEntity<InputStreamResource> downloadPdfFile() throws IOException {
-		Path pdfPath = Paths.get(ProducerConstants.PDF_FULL_PATH);
-		Resource finalPDF = storageService.loadFile(ProducerConstants.FINAL_PDF_NAME, pdfPath);
+		String pdfFullPath    = locationProperties.getHome()+File.separator+locationProperties.getPdfFolderName();
+		Path pdfPath = Paths.get(pdfFullPath);
+		Resource finalPDF = storageService.loadFile(locationProperties.getFinalPDFName(), pdfPath);
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.add(CACHE_CONTROL, NO_CACHE_STORE_MUST_REVALIDATE);
@@ -115,7 +118,8 @@ public class DownloadController {
 			MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE })
 	public ResponseEntity<InputStreamResource> viewImage(@PathVariable("imageName") String imageName)
 			throws IOException {
-		Path imagePath = Paths.get(ProducerConstants.IMAGES_FULL_PATH);
+		String imagesFullPath = locationProperties.getHome()+File.separator+locationProperties.getImageFolderName();
+		Path imagePath = Paths.get(imagesFullPath);
 		Resource image = storageService.loadFile(imageName, imagePath);
 		HttpHeaders headers = new HttpHeaders();
 		headers.add(CACHE_CONTROL, NO_CACHE_STORE_MUST_REVALIDATE);
@@ -164,7 +168,8 @@ public class DownloadController {
 	@GetMapping("/files/{filename:.+}")
 	@ResponseBody
 	public ResponseEntity<Resource> getFile(@PathVariable String filename) throws IOException {
-		Path imagePath = Paths.get(ProducerConstants.IMAGES_FULL_PATH);
+		String imagesFullPath = locationProperties.getHome()+File.separator+locationProperties.getImageFolderName();
+		Path imagePath = Paths.get(imagesFullPath);
 		Resource file = storageService.loadFile(filename, imagePath);
 		
 		return ResponseEntity.ok()

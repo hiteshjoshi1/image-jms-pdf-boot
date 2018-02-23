@@ -10,13 +10,14 @@ import java.nio.file.Paths;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.consensys.hitesh.producer.constants.ProducerConstants;
+import com.consensys.hitesh.producer.constants.LocationProperties;
 /**
  * Service for Image uploads and downloads
  * Did not program to an interface as I do not plan to extend this Service
@@ -26,6 +27,9 @@ import com.consensys.hitesh.producer.constants.ProducerConstants;
 
 @Component
 public class StorageService {
+	
+	@Autowired
+	LocationProperties locationProperties;
 
 	private static final Logger logger =  LoggerFactory.getLogger(StorageService.class
 			.getName());
@@ -64,16 +68,17 @@ public class StorageService {
 	}
 
 	public void init() {
-		logger.info("Initializing Folder to store.");
+		String imagesFullPath = locationProperties.getHome()+File.separator+locationProperties.getImageFolderName();
+		String pdfFullPath    = locationProperties.getHome()+File.separator+locationProperties.getPdfFolderName();
 		try {
 			
-			 File imgDirectory = new File(ProducerConstants.IMAGES_FULL_PATH);
-			 File pdfDirectory = new File(ProducerConstants.PDF_FULL_PATH);
+			 File imgDirectory = new File(imagesFullPath);
+			 File pdfDirectory = new File(pdfFullPath);
 			 if (! imgDirectory.exists()){
-				 Files.createDirectory(Paths.get(ProducerConstants.IMAGES_FULL_PATH));
+				 Files.createDirectory(Paths.get(imagesFullPath));
 			 }
 			 if (! pdfDirectory.exists()){
-				 Files.createDirectory(Paths.get(ProducerConstants.PDF_FULL_PATH));
+				 Files.createDirectory(Paths.get(pdfFullPath));
 			 }
 		} catch (IOException e) {
 			throw new RuntimeException("Could not initialize storage!");

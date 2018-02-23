@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.consensys.hitesh.producer.constants.ProducerConstants;
+import com.consensys.hitesh.producer.constants.LocationProperties;
 import com.consensys.hitesh.producer.model.ImageRequestDTO;
 import com.consensys.hitesh.producer.repository.ImageRepository;
 import com.consensys.hitesh.producer.services.JmsService;
@@ -46,6 +46,9 @@ public class UploadController {
 
 	@Autowired
 	ImageRepository imageRepository;
+	
+	@Autowired
+	LocationProperties locationProperties;
 
 	@PostMapping(value = "/post")
 	public ModelAndView handleFileUpload(@RequestPart("file") MultipartFile file, HttpServletRequest request) {
@@ -64,8 +67,9 @@ public class UploadController {
 		String[] tokens = imageFileName.split(DOT_SEPRATOR_REGEX);
 		String imageWithRandomName = tokens[0]+ UNDERSCORE+randomGenerator;
 		imageFileName = imageWithRandomName + DOT + tokens[1];
-		String completeImagePath = ProducerConstants.IMAGES_FULL_PATH + File.separator + imageFileName;
-		Path imagePath = Paths.get(ProducerConstants.IMAGES_FULL_PATH);
+		String imagesFullPath = locationProperties.getHome()+File.separator+locationProperties.getImageFolderName();
+		String completeImagePath = imagesFullPath + File.separator + imageFileName;
+		Path imagePath = Paths.get(imagesFullPath);
 		try {
 			if (storageService.store(file, imageFileName, imagePath)) {
 				message = FILE_UPLOAD_SUCCESSFUL + file.getOriginalFilename();
@@ -87,6 +91,7 @@ public class UploadController {
 		return modelAndView;
 	}
 
+	// @PathMapping(consumes="") is not working hence this check
 	private String validate(MultipartFile file) {
 		String validator = null;
 		if (file.isEmpty() || file.getSize() == 0) {

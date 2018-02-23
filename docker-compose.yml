@@ -7,29 +7,31 @@ services:
       - MONGO_DATA_DIR=/data/db
       - MONGO_LOG_DIR=/dev/null
     volumes:
-      - ./data/db:/data/db
+      - /home/${USER}/jarloc/db:/data/db
     ports:
         - 27017:27017
     networks:
        - microservicesnet      
     command: mongod --smallfiles --logpath=/dev/null # --quiet
 
-activemq:
-  image: webcenter/activemq:latest
-  ports:
-    - 8161:8161
-    - 61616:61616
-    - 61613:61613
-  networks:
-    - microservicesnet  
-  environment:
-    ACTIVEMQ_NAME: amq
-    ACTIVEMQ_REMOVE_DEFAULT_ACCOUNT: 'True'
-    ACTIVEMQ_ADMIN_LOGIN: admin
-    ACTIVEMQ_ADMIN_PASSWORD: admin
-  volumes:
-    - /container_data/activemq/data:/data/activemq
-    - /container_data/activemq/log:/var/log/activemq
+  activemq:
+    image: webcenter/activemq:latest
+    container_name: "activemq"
+    ports:
+      - 8161:8161
+      - 61616:61616
+      - 61613:61613
+    networks:
+      - microservicesnet  
+    environment:
+      ACTIVEMQ_NAME: amq
+      ACTIVEMQ_REMOVE_DEFAULT_ACCOUNT: 'True'
+      ACTIVEMQ_ADMIN_LOGIN: admin
+      ACTIVEMQ_ADMIN_PASSWORD: admin
+    volumes:
+      - /home/${USER}/jarloc/activemq/data:/data/activemq
+      - /home/${USER}/jarloc/activemq/log:/var/log/activemq
+
     
   producer:
     image: hiteshjoshi1/microservice-docker-cart-example
@@ -39,8 +41,8 @@ activemq:
     networks:
       - microservicesnet
     volumes:
-      - /home/hitesh/jarloc:/data
-    command: -jar  /data/producer-0.0.1-SNAPSHOT.jar
+      - /home/${USER}/jarloc:/data
+    command: -jar -Dspring.profiles.active=docker  /data/producer-0.0.1-SNAPSHOT.jar
     depends_on:
       mongodb:
          condition: service_started
@@ -55,8 +57,8 @@ activemq:
     networks:
       - microservicesnet
     volumes:
-      - /home/hitesh/jarloc:/data
-    command: -jar  /data/consumer-0.0.1-SNAPSHOT.jar
+      - /home/${USER}/jarloc:/data
+    command: -jar -Dspring.profiles.active=docker /data/consumer-0.0.1-SNAPSHOT.jar
     depends_on:
        mongodb:
          condition: service_started

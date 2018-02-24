@@ -13,7 +13,6 @@
 			<div class="panel-heading">
 				<h2>Your Images in PDF </h2>
 			</div>
-			<!-- <div th:if="${messages}"> -->
 			<div th:if="${ #maps.isEmpty(pdfMap)}">
 				<p class="alert alert-warning">No PDF's yet !</p>
 			</div>
@@ -21,6 +20,7 @@
 				<div class="panel-body" th:each="element : ${pdfMap}">
 					<div class="card">
 						<a th:href="${element.value}" target="_blank">
+						<image class="pdfIcon" src="/images/pdf.png" alt="pdf icon"/><br/>
 						 <span
 							th:text="${element.key}">
 						 </span>

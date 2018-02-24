@@ -104,4 +104,14 @@ Circuit breaker using Netflix Hysterix and Turbine.
 Distributed log gathering using Spring sleuth and zipkin and RabbitMQ AMQP.
 Edge proxy using Zuul
 
+Screenshots
 
+![Scheme](screenshots/home.PNG)
+
+![Scheme](screenshots/login.PNG)
+
+![Scheme](screenshots/pdf-download.PNG)
+
+![Scheme](screenshots/signup.PNG)
+
+![Scheme](screenshots/upload.PNG)

@@ -153,7 +153,7 @@ public class ImageToPdfConverter {
 
 	// Replace the old pdf with the new PDF generated post merge
 	private void updatePdfToLatest(String mainPdf, String tmpPdf) throws IOException {
-		logger.info("Replacing the old file with the latest");
+		logger.info("Replacing the old file with the updated file");
 		File oldfile = new File(mainPdf);
 		File newFile = new File(tmpPdf);
 		if (oldfile.delete()) {

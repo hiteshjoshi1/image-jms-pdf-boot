@@ -123,7 +123,7 @@ public class ImageToPdfConverter {
 			document = new Document();
 			pdfCopy = new PdfCopy(document, new FileOutputStream(tempFile));
 			document.open();
-
+			logger.info("Main PDF File ---- "+mainPDFFile);
 			File file = new File(mainPDFFile);
 			if (!file.exists()) {
 				// create the app wide file

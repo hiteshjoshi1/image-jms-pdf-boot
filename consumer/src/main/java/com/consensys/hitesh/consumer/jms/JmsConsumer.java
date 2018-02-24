@@ -53,10 +53,10 @@ public class JmsConsumer {
 			ObjectMapper mapper = new ObjectMapper();
 			ImageDTO imageDTO = mapper.readValue(messageData, ImageDTO.class);						
 			// convert to PDF AND STORE
-			String imagePath = imageProcessorService.createPDFFromImage(imageDTO);
+			String pdfPath = imageProcessorService.createPDFFromImage(imageDTO);
 			// Send PDF merge Request to PDF Queue
-			if(null != imagePath) {
-			jmsService.sendToQueue(imagePath);
+			if(null != pdfPath) {
+			jmsService.sendToQueue(pdfPath);
 			}
 		}
 	}
@@ -76,7 +76,7 @@ public class JmsConsumer {
 		if (jsonMessage instanceof TextMessage) {
 			TextMessage textMessage = (TextMessage) jsonMessage;
 			messageData = textMessage.getText();
-			logger.info("Finally PDf conversion request  ",messageData);
+			logger.info("Finally PDf conversion request  "+messageData);
 			
 			boolean isPDFUpdated = imageProcessorService.mergePDFs(messageData);
 			logger.info("Processsing complete "+isPDFUpdated);

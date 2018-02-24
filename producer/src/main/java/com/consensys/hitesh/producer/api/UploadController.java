@@ -50,7 +50,7 @@ public class UploadController {
 	@Autowired
 	LocationProperties locationProperties;
 
-	@PostMapping(value = "/post")
+	@PostMapping(value = "/upload")
 	public ModelAndView handleFileUpload(@RequestPart("file") MultipartFile file, HttpServletRequest request) {
 		Principal principal = request.getUserPrincipal();
 		ModelAndView modelAndView = null;

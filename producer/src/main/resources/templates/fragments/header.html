@@ -48,16 +48,41 @@
 								</div>
 							</li>
 							<li class="nav-item">
-								<div sec:authorize="isAuthenticated()">
-									<a class="nav-link" href="/getallfiles"> <i
+							<div sec:authorize="isAuthenticated()">							
+									<a class="nav-link" href="/userimages"> <i
 										class="fa d-inline fa-lg fa-bookmark-o"></i>View Images
 									</a>
-								</div>
+									</div>						
 							</li>
-							<li class="nav-item"><a class="nav-link" href="/view/pdf"
-								target="_blank"> <i
-									class="fa d-inline fa-lg fa-bookmark-o"></i>View PDF
-							</a></li>
+							
+							<li class="nav-item">
+							<div sec:authorize="isAnonymous()">							
+									<a class="nav-link" href="/allimages"> <i
+										class="fa d-inline fa-lg fa-bookmark-o"></i>View All Images
+									</a>
+									</div>						
+							</li>
+							
+							
+							<li class="nav-item">
+							<div sec:authorize="isAuthenticated()">
+							<a class="nav-link" href="/download/pdf"
+								> <i
+									class="fa d-inline fa-lg fa-bookmark-o"></i>App PDF Download
+							</a>
+							</div>
+							</li>
+							
+						<li class="nav-item">
+							<div sec:authorize="isAuthenticated()">
+							<a class="nav-link" href="/userpdf"
+								> <i
+									class="fa d-inline fa-lg fa-bookmark-o"></i>Your PDFs
+							</a>
+							</div>
+							</li>
+							
+							
 							<li class="nav-item">
 								<div sec:authorize="isAnonymous()">
 									<a class="nav-link" href="/login"> <i

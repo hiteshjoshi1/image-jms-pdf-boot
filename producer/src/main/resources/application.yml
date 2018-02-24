@@ -30,6 +30,7 @@ user:
   pdfFolderName: PDFFolder
   imageFolderName : ImageFolder
   finalPDFName : final.pdf
+  pdfIndiFolderName: AllPdfFolder
 
 
 

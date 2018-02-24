@@ -33,7 +33,7 @@ public class ImageToPdfConverter {
 
 	public static final String WORKING_FILE_NAME = "temp.pdf";
 
-	public static final String TEMP_PDF_FOLDER_NAME = "allPdfFolder";
+	public static final String TEMP_PDF_FOLDER_NAME = "AllPdfFolder";
 
 	public static final String FILE_SEPRATOR = File.separator;
 	

@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -107,7 +108,8 @@ public class DownloadController {
 	}
 
 	/**
-	 * Download Image Not used - Can be used if we decide to make images as
+	 * Not used
+	 * Download Image  - Can be used if we decide to make images as
 	 * thumbnails in view all page
 	 * 
 	 * @param imageId
@@ -138,8 +140,8 @@ public class DownloadController {
 	 * @param model
 	 * @return
 	 */
-	@GetMapping(value = "/getallfiles")
-	public ModelAndView messages(HttpServletRequest request) {
+	@GetMapping(value = "/userimages")
+	public ModelAndView getAllImagesByUser(HttpServletRequest request) {
 		Principal principal = request.getUserPrincipal();
 
 		List<ImageRequestDTO> imageRequestDTOs = imageRepository.findByImageOwner(principal.getName());
@@ -157,6 +159,71 @@ public class DownloadController {
 		modelAndView.addObject("messages", fileNames);
 		return modelAndView;
 	}
+	
+	
+	@GetMapping(value = "/allimages")
+	public ModelAndView getAllImages(HttpServletRequest request) {
+	
+
+		List<ImageRequestDTO> imageRequestDTOs = imageRepository.findAll();
+		List<String> files = new ArrayList<String>();
+
+		for (ImageRequestDTO imageRequestDTO : imageRequestDTOs) {
+			files.add(imageRequestDTO.getImageName());
+		}
+		logger.info("Please note the usage of stream API here");
+		List<String> fileNames = files
+				.stream().map(fileName -> MvcUriComponentsBuilder
+						.fromMethodName(DownloadController.class, "getFile", fileName).build().toString())
+				.collect(Collectors.toList());
+		ModelAndView modelAndView = new ModelAndView("images");
+		modelAndView.addObject("messages", fileNames);
+		return modelAndView;
+	}
+	
+	
+	
+	
+	@GetMapping(value = "/userpdf")
+	public ModelAndView getAllPDF(HttpServletRequest request) {
+		Principal principal = request.getUserPrincipal();
+
+		List<ImageRequestDTO> imageRequestDTOs = imageRepository.findByImageOwner(principal.getName());
+		List<String> files = new ArrayList<String>();
+
+		for (ImageRequestDTO imageRequestDTO : imageRequestDTOs) {
+			files.add(imageRequestDTO.getImagePdfName()+".pdf");
+		}
+		logger.info("Please note the usage of stream API here");
+		
+		Map<String, String> pdfNameURIMap =
+				imageRequestDTOs.stream().collect(Collectors.toMap(ImageRequestDTO::getImagePdfName, c -> MvcUriComponentsBuilder
+						.fromMethodName(DownloadController.class, "getPDFFile", c.getImagePdfName()+".pdf").build().toString() 
+				));
+		ModelAndView modelAndView = new ModelAndView("pdfPage");
+		modelAndView.addObject("pdfMap", pdfNameURIMap);
+		return modelAndView;
+	}
+	
+	@GetMapping("/pdf/{filename:.+}")
+	@ResponseBody
+	public ResponseEntity<Resource> getPDFFile(@PathVariable String filename) throws IOException {
+		String pdfFullPath = locationProperties.getHome()+File.separator+locationProperties.getPdfIndiFolderName();
+		Path pdfPath = Paths.get(pdfFullPath);
+		Resource file = storageService.loadFile(filename, pdfPath);
+		
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add(CACHE_CONTROL, NO_CACHE_STORE_MUST_REVALIDATE);
+		headers.add(PRAGMA_DIRECTIVE, NO_CACHE);
+		headers.add(EXPIRES, "0");
+		
+		return ResponseEntity.ok().headers(headers).contentLength(file.contentLength())
+				.contentType(MediaType.parseMediaType("application/pdf"))
+				.body(new InputStreamResource(file.getInputStream()));
+		
+	}
+	
 
 	/**
 	 * Download individual files
@@ -176,6 +243,7 @@ public class DownloadController {
 				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
 				.body(file);
 	}
+	
 	@GetMapping(value = "/error")
 	public String error() {
 		return "error";

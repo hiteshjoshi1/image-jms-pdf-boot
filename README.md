@@ -44,15 +44,17 @@ docker-compose up
 
 
 Following Docker containers are created
--  2 Java containers based on my Image at https://hub.docker.com/r/hiteshjoshi1/microservice-docker-cart-example/
-- The image has java 8.
+-  2 Java containers based on my Java 8 Image at https://hub.docker.com/r/hiteshjoshi1/microservice-docker-cart-example/
+- Consumer
+- Producer
 - ActiveMQ
 - MongoDB
+- We also join the containers in a network
 
 ## Producer Application
 Application is written using Spring boot for backend and thymeleaf and HTML for UI rendering. We are overriding Spring boot managed version of bootstrap webjar and using Bootstrap 4.0.0 
 
-# There are two Spring profiles
+## There are two Spring profiles
 - dev  : default profile, running on windows , baseDir can be changed to anything the user wants in application.yml
 - docker : Running in a docker container
 

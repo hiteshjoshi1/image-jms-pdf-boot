@@ -1,0 +1,36 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Consensys Demo on Java</title>
+
+<div th:replace="fragments/header :: header-css" />
+
+</head>
+<body>
+	<div th:replace="fragments/header :: header" />
+	<div class="container">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h2>Your Images in PDF </h2>
+			</div>
+			<!-- <div th:if="${messages}"> -->
+			<div th:if="${ #maps.isEmpty(pdfMap)}">
+				<p class="alert alert-warning">No PDF's yet !</p>
+			</div>
+			<div class="p-3 align-self-center col-6 col-md-6">
+				<div class="panel-body" th:each="element : ${pdfMap}">
+					<div class="card">
+						<a th:href="${element.value}" target="_blank">
+						 <span
+							th:text="${element.key}">
+						 </span>
+						</a>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

@@ -20,7 +20,7 @@
               		       <!-- accept is just a suggestion to the browser to show only jpeg and png
               		       any one can inspect code and remove this check to upload any type of file
               		       added server side checks for  file type -->  
-						<form method="POST" action="/post" enctype="multipart/form-data">
+						<form method="POST" action="/upload" enctype="multipart/form-data">
 							<input type="file" name="file" accept=".png,.jpeg,.jpg" /> <input
 								th:name="${_csrf.parameterName}" type="hidden"
 								th:value="${_csrf.token}" /> <input class="btn btn-primary"

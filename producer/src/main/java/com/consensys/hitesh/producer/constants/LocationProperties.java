@@ -17,6 +17,10 @@ public class LocationProperties {
 
 	@Value("${user.finalPDFName}")
 	private String finalPDFName;
+	
+	@Value("${user.pdfIndiFolderName}")
+	private String pdfIndiFolderName;
+
 
 	public String getHome() {
 		return home;
@@ -48,6 +52,14 @@ public class LocationProperties {
 
 	public void setFinalPDFName(String finalPDFName) {
 		this.finalPDFName = finalPDFName;
+	}
+
+	public String getPdfIndiFolderName() {
+		return pdfIndiFolderName;
+	}
+
+	public void setPdfIndiFolderName(String pdfIndiFolderName) {
+		this.pdfIndiFolderName = pdfIndiFolderName;
 	}
 
 }

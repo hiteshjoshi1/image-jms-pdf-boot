@@ -8,24 +8,54 @@
 	<div th:replace="fragments/header :: header" />
 	<div class="container">
 
+		<h1 class="display-3 mb-4 text-dark">Image APP&nbsp;</h1>
+		<p class="lead mb-5 text-dark">Image PDF JMS docker et al&nbsp;</p>
 		<div class="row">
-			<div class="col-md-12 text-white h-100">
-				<h1 class="display-3 mb-4 text-dark">Image APP&nbsp;</h1>
-				<p class="lead mb-5 text-dark">Image PDF JMS docker et
-					al&nbsp;</p>
-				<a href="/upload"
-					class="btn btn-lg align-items-center mx-5 btn-primary">Upload
-					Images</a> <a href="/view/pdf" target="_blank"
-					class="btn btn-lg mx-5 btn-secondary">View PDF</a> 
-					<a
-					href="/getallfiles" class="btn btn-lg mx-5 btn-secondary">View
-					Your Images</a>
-				<a
-					href="/download/pdf" class="btn btn-lg mx-5 btn-secondary">Download PDF</a>	
-					
+
+			<div class="col-sm-6">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">Upload your images</h5>
+						<p class="card-text">Converted to PDF and merged into an App
+							wide pdf</p>
+						<a href="/upload" class="btn btn-primary">Upload Images</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">View App wide PDF</h5>
+						<p class="card-text">Opens in a new tab, merged App wide pdf</p>
+						<a href="/view/pdf" target="_blank" class="btn btn-primary">View
+							App Wide PDF</a>
+					</div>
+				</div>
 			</div>
 		</div>
-	</div>
 
+		<div class="row">
+			<div class="col-sm-6">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">View your images</h5>
+						<p class="card-text">Images that you uploaded shown as a
+							thumbnail</p>
+						<a href="/userimages" class="btn btn-primary">Your Images</a>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-6">
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">View your PDF's</h5>
+						<p class="card-text">Your Images in PDF form</p>
+						<a href="/userpdf" class="btn btn-primary">View your PDF's</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
 </body>
 </html>

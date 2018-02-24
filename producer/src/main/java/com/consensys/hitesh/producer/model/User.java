@@ -14,13 +14,18 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection="user")
 public class User implements Serializable {
 
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -8003051101447631142L;
 	@Id
 	public String id;
+	// no - arg constructor
+	public User() {}
+	
+	public User(String userName, String password,String email) {
+		this.username = userName;
+		this.password = password;
+		this.email = email;
+		}
+	
 	private String email;
 	private String username;
     private String password;

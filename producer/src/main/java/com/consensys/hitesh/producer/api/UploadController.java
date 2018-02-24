@@ -1,11 +1,6 @@
 package com.consensys.hitesh.producer.api;
 
-import java.io.File;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.security.Principal;
-import java.util.Calendar;
-import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -22,31 +17,27 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.consensys.hitesh.producer.constants.LocationProperties;
 import com.consensys.hitesh.producer.model.ImageRequestDTO;
-import com.consensys.hitesh.producer.repository.ImageRepository;
 import com.consensys.hitesh.producer.services.JmsService;
 import com.consensys.hitesh.producer.services.StorageService;
 
+import io.swagger.annotations.Api;
+
 @Controller
+@Api(value = " UploadApi", description = "Controller for Uploading images")
 public class UploadController {
 
 	private static final Logger logger = LoggerFactory.getLogger(UploadController.class.getName());
 
-	private static final String DOT_SEPRATOR_REGEX = "\\.(?=[^\\.]+$)";
-	private static final String UNDERSCORE = "_";
-	private static final String DOT = ".";
 	private static final String FILE_IS_EMPTY = "File is empty";
 	private static final String FILE_UPLOAD_SUCCESSFUL = "You successfully uploaded file ";
 	private static final String NOT_SUPPORTED_FORMAT = "Only jpg/png file types are supported";
 
 	@Autowired
-	JmsService jmsService;
-
-	@Autowired
 	StorageService storageService;
 
 	@Autowired
-	ImageRepository imageRepository;
-	
+	JmsService jmsService;
+
 	@Autowired
 	LocationProperties locationProperties;
 
@@ -60,26 +51,14 @@ public class UploadController {
 			modelAndView.addObject("message", message);
 			return modelAndView;
 		}
-		String imageFileName = file.getOriginalFilename();
-		Random random = new Random();
-		// appending Random Numbers to avoid file Name collisions
-		int randomGenerator = random.nextInt(100000);
-		String[] tokens = imageFileName.split(DOT_SEPRATOR_REGEX);
-		String imageWithRandomName = tokens[0]+ UNDERSCORE+randomGenerator;
-		imageFileName = imageWithRandomName + DOT + tokens[1];
-		String imagesFullPath = locationProperties.getHome()+File.separator+locationProperties.getImageFolderName();
-		String completeImagePath = imagesFullPath + File.separator + imageFileName;
-		Path imagePath = Paths.get(imagesFullPath);
 		try {
-			if (storageService.store(file, imageFileName, imagePath)) {
-				message = FILE_UPLOAD_SUCCESSFUL + file.getOriginalFilename();
-				ImageRequestDTO imageRequestDTO = new ImageRequestDTO(completeImagePath,imageFileName,imageWithRandomName,
-						principal.getName(), Calendar.getInstance().getTime());
-				// save to Mongo DB
-				imageRepository.save(imageRequestDTO);
-				// send to JMS queue
-				jmsService.sendToQueue(imageRequestDTO);
-			}
+			// save image
+			ImageRequestDTO imageRequestDTO = storageService.transformAndStore(file, 
+					principal.getName());
+			// send mesg to JMS queue
+			jmsService.sendToQueue(imageRequestDTO);
+			// show response in UI
+			message = FILE_UPLOAD_SUCCESSFUL + file.getOriginalFilename();
 			modelAndView = new ModelAndView("upload", HttpStatus.OK);
 			modelAndView.addObject("success", message);
 		} catch (Exception e) {

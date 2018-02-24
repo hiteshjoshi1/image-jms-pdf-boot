@@ -39,7 +39,7 @@ import com.consensys.hitesh.producer.services.StorageService;
 import io.swagger.annotations.Api;
 
 @RestController
-@Api(value = " ImageAPI", description = "Api for Image Upload/View")
+@Api(value = " ImageAPI", description = "Controller for File View/ Download")
 public class DownloadController {
 
 	@Autowired
@@ -50,6 +50,7 @@ public class DownloadController {
 	
 	@Autowired
 	LocationProperties locationProperties;
+	
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class.getName());
 
 	private static final String CACHE_CONTROL = "Cache-Control";
@@ -204,7 +205,12 @@ public class DownloadController {
 		modelAndView.addObject("pdfMap", pdfNameURIMap);
 		return modelAndView;
 	}
-	
+	/**
+	 * Download individual PDF's
+	 * @param filename
+	 * @return
+	 * @throws IOException
+	 */
 	@GetMapping("/pdf/{filename:.+}")
 	@ResponseBody
 	public ResponseEntity<Resource> getPDFFile(@PathVariable String filename) throws IOException {
@@ -226,7 +232,7 @@ public class DownloadController {
 	
 
 	/**
-	 * Download individual files
+	 * Download individual Images
 	 * 
 	 * @param filename
 	 * @return
@@ -251,7 +257,7 @@ public class DownloadController {
 	
 	  @ExceptionHandler(IOException.class)
 	  public String handle(IOException e) {
-	        return "error"; // use message from the original exception
+	        return "error"; 
 	    }
 
 }

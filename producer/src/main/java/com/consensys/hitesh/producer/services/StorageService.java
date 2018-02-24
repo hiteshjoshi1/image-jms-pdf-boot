@@ -7,6 +7,8 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Calendar;
+import java.util.Random;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +20,8 @@ import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.consensys.hitesh.producer.constants.LocationProperties;
+import com.consensys.hitesh.producer.model.ImageRequestDTO;
+import com.consensys.hitesh.producer.repository.ImageRepository;
 /**
  * Service for Image uploads and downloads
  * Did not program to an interface as I do not plan to extend this Service
@@ -28,13 +32,43 @@ import com.consensys.hitesh.producer.constants.LocationProperties;
 @Component
 public class StorageService {
 	
+	private static final String DOT_SEPRATOR_REGEX = "\\.(?=[^\\.]+$)";
+	private static final String UNDERSCORE = "_";
+	private static final String DOT = ".";
+
+	
 	@Autowired
 	LocationProperties locationProperties;
+	
+	@Autowired
+	ImageRepository imageRepository;
 
 	private static final Logger logger =  LoggerFactory.getLogger(StorageService.class
 			.getName());
+	
+	public ImageRequestDTO transformAndStore(MultipartFile file, String userName) {
+		String imageFileName = file.getOriginalFilename();
+		Random random = new Random();
+		// appending Random Numbers to avoid file Name collisions
+		int randomGenerator = random.nextInt(100000);
+		String[] tokens = imageFileName.split(DOT_SEPRATOR_REGEX);
+		String imageWithRandomName = tokens[0]+ UNDERSCORE+randomGenerator;
+		imageFileName = imageWithRandomName + DOT + tokens[1];
+		String imagesFullPath = locationProperties.getHome()+File.separator+locationProperties.getImageFolderName();
+		String completeImagePath = imagesFullPath + File.separator + imageFileName;
+		Path imagePath = Paths.get(imagesFullPath);
+		ImageRequestDTO imageRequestDTO = null;
+		if (this.store(file, imageFileName, imagePath)) {
+			imageRequestDTO = new ImageRequestDTO(completeImagePath,imageFileName,imageWithRandomName,
+					userName, Calendar.getInstance().getTime());
+			// save to Mongo DB
+			imageRepository.save(imageRequestDTO);
+		}
+		return imageRequestDTO;						
+	}
+	
 
-	public boolean store(MultipartFile file, String generatedFileName, Path path) {
+	private boolean store(MultipartFile file, String generatedFileName, Path path) {
 		boolean updated = false;
 		
 			long numBytes;
@@ -60,7 +94,7 @@ public class StorageService {
 			}
 		} catch (MalformedURLException e) {
 			logger.error("Load file Failed with error", e);
-			throw new RuntimeException("FAIL!");
+			throw new RuntimeException("URL Malformed!");
 		}
 	}
 

@@ -33,13 +33,14 @@ public class ImageToPdfConverter {
 
 	public static final String WORKING_FILE_NAME = "temp.pdf";
 
-	public static final String PDF_FOLDER_NAME = "pdfFolder";
-
 	public static final String TEMP_PDF_FOLDER_NAME = "allPdfFolder";
 
 	public static final String FILE_SEPRATOR = File.separator;
 	
 	public static final String PDF_EXTENSION = ".pdf";
+	
+	@Value("${user.pdfFolderName}")
+	private String pdfFolderName;	
 	
 	@Value("${user.baseDir}")
 	private String home;	
@@ -79,8 +80,8 @@ public class ImageToPdfConverter {
 	 * @throws DocumentException
 	 */
 	public boolean mergePdfs(String uploadedPDFPath) throws IOException, DocumentException {
-		String mainPDFFile = home + FILE_SEPRATOR + PDF_FOLDER_NAME + FILE_SEPRATOR + MAIN_PDF_FILE_NAME;
-		String tempFile = home + FILE_SEPRATOR + PDF_FOLDER_NAME + FILE_SEPRATOR + WORKING_FILE_NAME;
+		String mainPDFFile = home + FILE_SEPRATOR + pdfFolderName + FILE_SEPRATOR + MAIN_PDF_FILE_NAME;
+		String tempFile = home + FILE_SEPRATOR + pdfFolderName + FILE_SEPRATOR + WORKING_FILE_NAME;
 		return updatePDFByPDF(uploadedPDFPath, mainPDFFile, tempFile);
 
 	}	
@@ -123,7 +124,7 @@ public class ImageToPdfConverter {
 			document = new Document();
 			pdfCopy = new PdfCopy(document, new FileOutputStream(tempFile));
 			document.open();
-			logger.info("Main PDF File ---- "+mainPDFFile);
+
 			File file = new File(mainPDFFile);
 			if (!file.exists()) {
 				// create the app wide file
@@ -175,7 +176,7 @@ public class ImageToPdfConverter {
 	 */
 	public boolean addtoPdf(ImageDTO imageDTO) throws IOException, DocumentException {
 		// Get OS file seprator
-		String directoryPath = home + FILE_SEPRATOR + PDF_FOLDER_NAME;
+		String directoryPath = home + FILE_SEPRATOR + pdfFolderName;
 		File directory = new File(directoryPath);
 		if (!directory.exists()) {
 			directory.mkdir();
@@ -190,7 +191,7 @@ public class ImageToPdfConverter {
 		String imagePath = imageDTO.getImageLocation();
 
 		if (file.exists()) {
-			logger.info("Pdf exists, Updating PDF ");
+			logger.info("Pdf exists, Updating PDF.... ");
 			fileUpdated = updatePDF(pdfFilePath, tempPDFFilePath, imagePath);
 			if (fileUpdated) {
 				// rename the temp PDF to new PDF, delete existing

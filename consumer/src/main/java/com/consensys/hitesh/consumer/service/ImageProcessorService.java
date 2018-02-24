@@ -41,11 +41,10 @@ public class ImageProcessorService {
 	 */
 	public boolean mergePDFs(String newPDFpath) {
 		try {
-			logger.info("New PDF Path   ---> "+newPDFpath);
-			return imageToPdfConverter.mergePdfs(newPDFpath);
+		return imageToPdfConverter.mergePdfs(newPDFpath);
 		} catch (IOException | DocumentException e) {
-			logger.error("Failed to add an image ", e);
-			// TODO - throw a user generated error message
+			logger.error("Merging PDF Failed ",e);
+			e.printStackTrace();
 			return false;
 		}
 	}

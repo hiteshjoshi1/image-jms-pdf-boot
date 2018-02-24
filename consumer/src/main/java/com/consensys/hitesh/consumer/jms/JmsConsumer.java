@@ -76,7 +76,7 @@ public class JmsConsumer {
 		if (jsonMessage instanceof TextMessage) {
 			TextMessage textMessage = (TextMessage) jsonMessage;
 			messageData = textMessage.getText();
-			logger.info("Finally PDf conversion request  "+messageData);
+			logger.info("PDf conversion request received --  "+messageData);
 			
 			boolean isPDFUpdated = imageProcessorService.mergePDFs(messageData);
 			logger.info("Processsing complete "+isPDFUpdated);
